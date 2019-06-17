@@ -11,6 +11,11 @@ profile
 *.ipr
 *.iml
 
+#Eclipse
+.settings
+.classpath
+.project
+
 # TeX build noise
 *.aux
 *.bbl
