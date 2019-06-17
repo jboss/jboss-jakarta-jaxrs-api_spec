@@ -20,40 +20,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>jakarta.ws.rs</groupId>
-    <artifactId>jakarta.ws.rs-api</artifactId>
-    <version>2.1.5</version>
+    <parent>
+      <groupId>org.jboss</groupId>
+      <artifactId>jboss-parent</artifactId>
+      <version>35</version>
+    </parent>
+
+
+    <groupId>org.jboss.spec.jakarta.ws.rs</groupId>
+    <artifactId>jboss-jakarta-ws-rs-api_2.1.5_spec</artifactId>
+    <version>1.0.0.CR1-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>javax.ws.rs-api</name>
     <description>Java API for RESTful Web Services</description>
-
-    <url>https://github.com/eclipse-ee4j/jaxrs-api</url>
-
-    <organization>
-        <name>Eclipse Foundation</name>
-        <url>https://www.eclipse.org/org/foundation/</url>
-    </organization>
-
-    <developers>
-        <developer>
-            <id>developers</id>
-            <name>JAX-RS API Developers</name>
-            <email>jaxrs-dev@eclipse.org</email>
-            <url>https://github.com/eclipse-ee4j/jaxrs-api/graphs/contributors</url>
-        </developer>
-    </developers>
-
-    <issueManagement>
-        <system>Github</system>
-        <url>https://github.com/eclipse-ee4j/jaxrs-api/issues</url>
-    </issueManagement>
-
-    <mailingLists>
-        <mailingList>
-            <name>JAX-RS Developer Discussions</name>
-            <archive>jaxrs-dev@eclipse.org</archive>
-        </mailingList>
-    </mailingLists>
 
     <licenses>
         <license>
@@ -69,8 +48,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:https://github.com/eclipse-ee4j/jaxrs-api</connection>
-        <url>https://github.com/eclipse-ee4j/jaxrs-api</url>
+        <connection>scm:git:git@github.com:jboss/jboss-jakarta-jaxrs-api_spec.git</connection>
+        <developerConnection>scm:git:git@github.com:jboss/jboss-jakarta-jaxrs-api_spec.git</developerConnection>
+        <url>https://github.com/jboss/jboss-jakarta-jaxrs-api_spec</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -99,91 +79,6 @@
             <properties>
                 <skip.release.tests>true</skip.release.tests>
             </properties>
-        </profile>
-        <profile>
-            <id>release</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <!-- Enables step-by-step staging deployment -->
-                            <groupId>org.sonatype.plugins</groupId>
-                            <artifactId>nexus-staging-maven-plugin</artifactId>
-                            <version>1.6.7</version>
-                        </plugin>
-                        <plugin>
-                            <!-- Newer version then in parent -->
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-gpg-plugin</artifactId>
-                            <version>1.6</version>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-release-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>sign-release</id>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-deploy-plugin</artifactId>
-                        <configuration>
-                            <skip>true</skip> <!-- To prefer nexus-staging-maven-plugin -->
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <extensions>true</extensions>
-                        <executions>
-                            <execution>
-                                <id>default-deploy</id>
-                                <phase>deploy</phase>
-                                <goals>
-                                    <goal>deploy</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-
-            <distributionManagement>
-                <repository>
-                    <id>ossrh</id>
-                    <name>Sonatype Nexus Releases</name>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-                </repository>
-
-                <snapshotRepository>
-                    <id>ossrh</id>
-                    <name>Sonatype Nexus Snapshots</name>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-                </snapshotRepository>
-            </distributionManagement>
         </profile>
         <profile>
             <id>jdk11+</id>
@@ -515,7 +410,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>3.0.1</version>
                     <executions>
                         <execution>
                             <id>attach-sources</id>
@@ -529,7 +423,6 @@
                     <!-- Adding files to jar-->
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>3.0.0</version>
                     <executions>
                         <execution>
                             <id>add-legal-resource</id>
@@ -555,7 +448,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
-                    <version>2.8.2</version>
                     <configuration>
                         <retryFailedDeploymentCount>10</retryFailedDeploymentCount>
                     </configuration>
@@ -563,7 +455,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>2.5.3</version>
                     <!--
                         To release a non-final version:
                         ===============================
@@ -593,7 +484,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jxr-plugin</artifactId>
-                    <version>2.5</version>
                     <executions>
                         <execution>
                             <goals>
@@ -606,11 +496,11 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>2.12.1</version>
                     <configuration>
                         <outputDirectory>${project.build.directory}/checkstyle</outputDirectory>
                         <outputFile>${project.build.directory}/checkstyle/checkstyle-result.xml</outputFile>
                         <configLocation>${basedir}/../etc/config/checkstyle.xml</configLocation>
+                        <excludes>**/module-info.java</excludes>
                     </configuration>
                     <executions>
                         <execution>
@@ -729,6 +619,7 @@
         <jaxb.impl.version>2.3.2</jaxb.impl.version>
         <activation.api.version>1.2.1</activation.api.version>
         <legal.doc.folder>${project.basedir}/..</legal.doc.folder>
+        <version.checkstyle>6.18</version.checkstyle>
     </properties>
 
     <distributionManagement>
