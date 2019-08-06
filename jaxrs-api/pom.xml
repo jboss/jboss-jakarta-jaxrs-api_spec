@@ -27,9 +27,9 @@
     </parent>
 
 
-    <groupId>org.jboss.spec.jakarta.ws.rs</groupId>
-    <artifactId>jboss-jakarta-ws-rs-api_2.1.5_spec</artifactId>
-    <version>1.0.0.CR1-SNAPSHOT</version>
+    <groupId>org.jboss.spec.javax.ws.rs</groupId>
+    <artifactId>jboss-jaxrs-api_2.1_spec</artifactId>
+    <version>2.0.0.CR1-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>javax.ws.rs-api</name>
     <description>Java API for RESTful Web Services</description>
