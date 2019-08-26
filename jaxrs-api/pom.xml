@@ -249,6 +249,12 @@
                                 <goals>
                                     <goal>jar</goal>
                                 </goals>
+                                <configuration>
+                                    <gpgArguments>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                    </gpgArguments>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
@@ -338,7 +344,7 @@
                         <instructions>
                             <_failok>true</_failok>
                             <Build-Id>${buildNumber}</Build-Id>
-                            <Bundle-Description>Java API for RESTful Web Services (JAX-RS)</Bundle-Description>
+                            <Bundle-Description>Jakarta RESTful Web Services API</Bundle-Description>
                             <Bundle-Version>${spec.bundle.version}</Bundle-Version>
                             <Bundle-SymbolicName>jakarta.ws.rs-api</Bundle-SymbolicName>
                             <DynamicImport-Package>*</DynamicImport-Package>
@@ -368,12 +374,13 @@
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>${maven.javadoc.plugin.version}</version>
                     <configuration>
+                        <source>8</source>
                         <doctitle>${apidocs.title}</doctitle>
+                        <docfilessubdirs>true</docfilessubdirs>
                         <bottom>
-                            <![CDATA[Copyright &#169; 1996-2017,
-                                <a href="http://www.oracle.com">Oracle</a>
-                                and/or its affiliates. All Rights Reserved.
-                            ]]>
+                            <![CDATA[Copyright (c) 2019 Eclipse Foundation.
+                            Licensed under <a href="resources/EFSL.html">Eclipse Foundation
+                            Specification License</a>.]]>
                         </bottom>
                         <doclint>none</doclint>
                         <!--javaApiLinks>
@@ -597,12 +604,12 @@
     </dependencies>
 
     <properties>
-        <apidocs.title>JAX-RS ${spec.version} API Specification ${spec.version.revision}</apidocs.title>
+        <apidocs.title>Jakarta RESTful Web Services ${spec.version} API Specification ${spec.version.revision}</apidocs.title>
         <java.version>1.8</java.version>
 
         <maven.bundle.plugin.version>3.5.0</maven.bundle.plugin.version>
         <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
-        <maven.javadoc.plugin.version>3.0.0</maven.javadoc.plugin.version>
+        <maven.javadoc.plugin.version>3.1.0</maven.javadoc.plugin.version>
 
         <api.package>javax.ws.rs</api.package>
         <last.final.spec.version>2.1</last.final.spec.version>
@@ -625,13 +632,13 @@
     <distributionManagement>
         <repository>
             <id>repo.eclipse.org</id>
-            <name>JAX-RS API Repository - Releases</name>
+            <name>API Repository - Releases</name>
             <url>https://repo.eclipse.org/content/repositories/jax-rs-api-releases/</url>
         </repository>
 
         <snapshotRepository>
             <id>repo.eclipse.org</id>
-            <name>JAX-RS API Repository - Snapshots</name>
+            <name>API Repository - Snapshots</name>
 	    <url>https://repo.eclipse.org/content/repositories/jax-rs-api-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>

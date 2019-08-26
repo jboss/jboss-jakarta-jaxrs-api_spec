@@ -16,6 +16,11 @@
 
 package javax.ws.rs.client;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.ws.rs.ProcessingException;
+import javax.ws.rs.core.Configurable;
+import javax.ws.rs.core.Configuration;
 import java.net.URL;
 import java.security.AccessController;
 import java.security.KeyStore;
@@ -24,14 +29,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import javax.ws.rs.ProcessingException;
-import javax.ws.rs.core.Configurable;
-import javax.ws.rs.core.Configuration;
-import javax.ws.rs.sse.SseEventSource;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
 
 /**
  * Main entry point to the client API used to bootstrap {@link javax.ws.rs.client.Client}
@@ -62,7 +59,7 @@ public abstract class ClientBuilder implements Configurable<ClientBuilder> {
 
     /**
      * Create a new {@code ClientBuilder} instance using the default client builder
-     * implementation class provided by the JAX-RS implementation provider.
+     * implementation class provided by the implementation provider.
      *
      * @return new client builder instance.
      */
@@ -108,7 +105,7 @@ public abstract class ClientBuilder implements Configurable<ClientBuilder> {
 
     /**
      * Create a new {@link Client} instance using the default client builder implementation
-     * class provided by the JAX-RS implementation provider.
+     * class provided by the implementation provider.
      *
      * @return new client instance.
      */
@@ -118,7 +115,7 @@ public abstract class ClientBuilder implements Configurable<ClientBuilder> {
 
     /**
      * Create a new custom-configured {@link Client} instance using the default client builder
-     * implementation class provided by the JAX-RS implementation provider.
+     * implementation class provided by the implementation provider.
      *
      * @param configuration data used to provide initial configuration for the new
      *                      client instance.
@@ -243,7 +240,7 @@ public abstract class ClientBuilder implements Configurable<ClientBuilder> {
      * <p>
      * Provided executor service will be used for executing asynchronous tasks.
      * <p>
-     * When running in a Java EE container, implementations are required to use the container-managed
+     * When running in a Jakarta EE container, implementations are required to use the container-managed
      * executor service by default.  In Java SE, the default is implementation-specific.  In either
      * case, calling this method will override the default.
      *
@@ -261,7 +258,7 @@ public abstract class ClientBuilder implements Configurable<ClientBuilder> {
      * <p>
      * Provided executor service will be used for executing scheduled asynchronous tasks.
      * <p>
-     * When running in a Java EE container, implementations are required to use the container-managed
+     * When running in a Jakarta EE container, implementations are required to use the container-managed
      * scheduled executor service by default.  In Java SE the default is implementation-specific.  In 
      * either case, calling this method will override the default.
      *

@@ -16,6 +16,13 @@
 
 package javax.ws.rs.container;
 
+import javax.ws.rs.core.EntityTag;
+import javax.ws.rs.core.Link;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.MessageBodyWriter;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -24,14 +31,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-
-import javax.ws.rs.core.EntityTag;
-import javax.ws.rs.core.Link;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.NewCookie;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.MessageBodyWriter;
 
 /**
  * Container response filter context.
@@ -327,7 +326,7 @@ public interface ContainerResponseContext {
      * </pre>
      * <p>
      * The container response context for a response returned from the {@code getMe()} method above would contain all
-     * the annotations declared on the {@code getAnnotatedMe()} method (<tt>&#64;GET, &#64;Custom</tt>) as well as all
+     * the annotations declared on the {@code getAnnotatedMe()} method ({@code @GET}, {@code @Custom}) as well as all
      * the annotations from the {@code extras} field, provided this value has not been replaced by any container response filter
      * invoked earlier.
      * </p>
@@ -352,7 +351,7 @@ public interface ContainerResponseContext {
      * <p>
      * Provided that the value has not been replaced by any container response filter invoked earlier,
      * the container response context for a response returned from the {@code getMe()} method above would contain all
-     * the annotations on the {@code getMe()} method (<tt>&#64;GET</tt>) as well as all the annotations from the
+     * the annotations on the {@code getMe()} method ({@code @GET}) as well as all the annotations from the
      * {@code extras} field. It would however not contain any annotations declared on the {@code AnnotatedMe} class.
      * </p>
      *
@@ -361,7 +360,7 @@ public interface ContainerResponseContext {
     public Annotation[] getEntityAnnotations();
 
     /**
-     * Get the entity output stream. The JAX-RS runtime is responsible for
+     * Get the entity output stream. The runtime is responsible for
      * closing the output stream.
      *
      * @return entity output stream.
@@ -369,7 +368,7 @@ public interface ContainerResponseContext {
     public OutputStream getEntityStream();
 
     /**
-     * Set a new entity output stream. The JAX-RS runtime is responsible for
+     * Set a new entity output stream. The runtime is responsible for
      * closing the output stream.
      *
      * @param outputStream new entity output stream.
