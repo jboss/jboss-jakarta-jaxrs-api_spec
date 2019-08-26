@@ -346,7 +346,7 @@
                             <Build-Id>${buildNumber}</Build-Id>
                             <Bundle-Description>Jakarta RESTful Web Services API</Bundle-Description>
                             <Bundle-Version>${spec.bundle.version}</Bundle-Version>
-                            <Bundle-SymbolicName>jakarta.ws.rs-api</Bundle-SymbolicName>
+                            <Bundle-SymbolicName>org.jboss.spec.javax.ws.rs.jboss-jaxrs-api_2.1_spec</Bundle-SymbolicName>
                             <DynamicImport-Package>*</DynamicImport-Package>
                             <Extension-Name>${spec.extension.name}</Extension-Name>
                             <Implementation-Version>${spec.implementation.version}</Implementation-Version>
