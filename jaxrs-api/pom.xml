@@ -31,7 +31,7 @@
     <artifactId>jboss-jaxrs-api_2.1_spec</artifactId>
     <version>2.0.0.Final-SNAPSHOT</version>
     <packaging>bundle</packaging>
-    <name>jakarta.ws.rs-api</name>
+    <name>jboss-jakarta-jaxrs-api_spec</name>
     <description>Jakarta API for RESTful Web Services</description>
 
     <licenses>
@@ -616,7 +616,7 @@
         <spec.version>${last.final.spec.version}</spec.version>
         <spec.version.revision /> <!-- e.g. (Rev a) -->
 
-        <jaxb.api.version>2.0.0.CR1</jaxb.api.version>
+        <jaxb.api.version>2.0.0.Final</jaxb.api.version>
         <jaxb.impl.version>2.3.2</jaxb.impl.version>
         <activation.api.version>1.2.1</activation.api.version>
         <legal.doc.folder>${project.basedir}/..</legal.doc.folder>
