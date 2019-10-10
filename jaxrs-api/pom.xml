@@ -29,7 +29,7 @@
 
     <groupId>org.jboss.spec.javax.ws.rs</groupId>
     <artifactId>jboss-jaxrs-api_2.1_spec</artifactId>
-    <version>2.0.0.Final</version>
+    <version>2.0.1.Final</version>
     <packaging>bundle</packaging>
     <name>jboss-jakarta-jaxrs-api_spec</name>
     <description>Jakarta API for RESTful Web Services</description>
@@ -87,8 +87,8 @@
             </activation>
             <dependencies>
                 <dependency>
-                    <groupId>org.jboss.spec.javax.xml.bind</groupId>
-                    <artifactId>jboss-jaxb-api_2.3_spec</artifactId>
+                    <groupId>jakarta.xml.bind</groupId>
+                    <artifactId>jakarta.xml.bind-api</artifactId>
                     <version>${jaxb.api.version}</version>
                     <scope>provided</scope>
                 </dependency>
@@ -616,7 +616,7 @@
         <spec.version>${last.final.spec.version}</spec.version>
         <spec.version.revision /> <!-- e.g. (Rev a) -->
 
-        <jaxb.api.version>2.0.0.Final</jaxb.api.version>
+        <jaxb.api.version>2.3.2</jaxb.api.version>
         <jaxb.impl.version>2.3.2</jaxb.impl.version>
         <activation.api.version>1.2.1</activation.api.version>
         <legal.doc.folder>${project.basedir}/..</legal.doc.folder>
