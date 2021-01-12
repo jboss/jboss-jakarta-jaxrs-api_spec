@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+
+import jakarta.ws.rs.core.GenericType;
+
 import static org.junit.Assert.assertEquals;
 
 /**

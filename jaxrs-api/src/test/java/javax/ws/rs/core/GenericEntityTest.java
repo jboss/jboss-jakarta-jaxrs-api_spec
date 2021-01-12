@@ -28,6 +28,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.junit.Test;
+
+import jakarta.ws.rs.core.GenericEntity;
+
 import static org.junit.Assert.*;
 
 public class GenericEntityTest {

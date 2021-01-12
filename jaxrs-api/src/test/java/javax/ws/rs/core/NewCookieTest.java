@@ -16,11 +16,14 @@
 
 package javax.ws.rs.core;
 
-import javax.ws.rs.ext.RuntimeDelegate;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import jakarta.ws.rs.core.Cookie;
+import jakarta.ws.rs.core.NewCookie;
+import jakarta.ws.rs.ext.RuntimeDelegate;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 

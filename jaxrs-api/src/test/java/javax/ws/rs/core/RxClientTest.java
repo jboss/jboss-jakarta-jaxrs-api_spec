@@ -20,13 +20,14 @@ import java.util.List;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutorService;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.CompletionStageRxInvoker;
-import javax.ws.rs.client.RxInvokerProvider;
-import javax.ws.rs.client.SyncInvoker;
-
 import org.junit.Ignore;
 import org.junit.Test;
+
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.CompletionStageRxInvoker;
+import jakarta.ws.rs.client.RxInvokerProvider;
+import jakarta.ws.rs.client.SyncInvoker;
+import jakarta.ws.rs.core.GenericType;
 
 /**
  * Class RxClientTest.
@@ -39,7 +40,7 @@ public class RxClientTest {
 
     /**
      * Shows how to use the default reactive invoker by calling method {@link
-     * javax.ws.rs.client.Invocation.Builder#rx()} without any arguments.
+     * jakarta.ws.rs.client.Invocation.Builder#rx()} without any arguments.
      */
     @Test
     @Ignore
@@ -58,7 +59,7 @@ public class RxClientTest {
 
     /**
      * Shows how other reactive invokers could be plugged in using the class
-     * as an argument in {@link javax.ws.rs.client.Invocation.Builder#rx(Class)}.
+     * as an argument in {@link jakarta.ws.rs.client.Invocation.Builder#rx(Class)}.
      */
     @Test
     @Ignore
@@ -79,7 +80,7 @@ public class RxClientTest {
 
     /**
      * Shows how other reactive invokers could be plugged in using the class instance
-     * as an argument in {@link javax.ws.rs.client.Invocation.Builder#rx(Class)}.
+     * as an argument in {@link jakarta.ws.rs.client.Invocation.Builder#rx(Class)}.
      */
     @Test
     @Ignore

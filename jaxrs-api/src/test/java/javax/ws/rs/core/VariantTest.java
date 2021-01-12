@@ -17,6 +17,10 @@
 package javax.ws.rs.core;
 
 import org.junit.Test;
+
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Variant;
+
 import static org.junit.Assert.assertNull;
 
 /**

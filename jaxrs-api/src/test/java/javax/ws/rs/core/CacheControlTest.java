@@ -16,16 +16,18 @@
 
 package javax.ws.rs.core;
 
-import javax.ws.rs.ext.RuntimeDelegate;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import jakarta.ws.rs.core.CacheControl;
+import jakarta.ws.rs.ext.RuntimeDelegate;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * {@link javax.ws.rs.core.CacheControl} unit tests.
+ * {@link jakarta.ws.rs.core.CacheControl} unit tests.
  *
  * @author Marek Potociar
  */

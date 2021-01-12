@@ -19,6 +19,9 @@ package javax.ws.rs.core;
 import java.util.Map;
 
 import org.junit.Test;
+
+import jakarta.ws.rs.core.MediaType;
+
 import static org.junit.Assert.assertEquals;
 
 /**

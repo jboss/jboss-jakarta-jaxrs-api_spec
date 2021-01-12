@@ -18,6 +18,8 @@ package javax.ws.rs.core;
 
 import org.junit.Test;
 
+import jakarta.ws.rs.core.AbstractMultivaluedMap;
+
 import static junit.framework.Assert.fail;
 
 /**
