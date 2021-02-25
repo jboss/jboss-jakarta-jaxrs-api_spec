@@ -1,0 +1,40 @@
+Version 1.0.0.Final of jboss-jaxrs-api_3.0_spec is based on
+version 3.0.0 of https://github.com/eclipse-ee4j/jaxrs-api.
+
+Some changes from earlier JBoss versions at
+
+  * https://github.com/jboss/jboss-jaxrs-api_spec, and
+  * https://github.com/jboss/jboss-jakarta-jaxrs-api_spec
+ 
+ were reapplied. In particular, 
+ 
+ 1. The following are extended to use the jboss module class loader
+    for "org.jboss.resteasy.resteasy-jaxrs-api":
+ 
+  * jakarta.ws.rs.client.FactoryFinder
+  * jakarta.ws.rs.ext.FactoryFinder
+  
+2. The following are extended to wrap some code in a PrivilegedAction
+   or PrivilegedExceptionAction:
+  
+  * jakarta.ws.rs.client.FactoryFinder
+  * jakarta.ws.rs.ext.FactoryFinder
+  * jakarta.ws.rs.sse.FactoryFinder
+  * jakarta.ws.rs.client.ClientBuilder
+  
+Comments have been added to indicate the pull request that introduce
+the above changes.
+  
+The following files have some comments to indicate where the
+corresponding file on https://github.com/eclipse-ee4j/jaxrs-api
+introduces some changes since version jboss-jaxrs-api_2.1_spec-2.0.1.Final
+on https://github.com/jboss/jboss-jakarta-jaxrs-api_spec:
+
+  * jakarta.ws.rs.client.ClientBuilder
+  * jakarta.ws.rs.client.FactoryFinder
+  * jakarta.ws.rs.core.EntityTag
+  * jakarta.ws.rs.core.MediaType
+  * jakarta.ws.rs.ext.FactoryFinder
+  * jakarta.ws.rs.ext.RuntimeDelegate
+  * jakarta.ws.rs.sse.FactoryFinder
+  * jakarta.ws.rs.sse.SseEventSource
