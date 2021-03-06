@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, 2020 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,22 +14,24 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-module jakarta.ws.rs {
+package jakarta.ws.rs;
 
-    requires static jakarta.xml.bind;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-    requires java.logging;
-
-    exports jakarta.ws.rs;
-    exports jakarta.ws.rs.client;
-    exports jakarta.ws.rs.container;
-    exports jakarta.ws.rs.core;
-    exports jakarta.ws.rs.ext;
-    exports jakarta.ws.rs.sse;
-
-    uses jakarta.ws.rs.client.ClientBuilder;
-    uses jakarta.ws.rs.ext.RuntimeDelegate;
-    uses jakarta.ws.rs.sse.SseEventSource.Builder;
-
-    opens jakarta.ws.rs.core to jakarta.xml.bind;
+/**
+ * Indicates that the annotated method responds to HTTP PATCH requests.
+ *
+ * @author Pavel Bucek (pavel.bucek at oracle.com)
+ * @see HttpMethod
+ * @since 2.1
+ */
+@Target({ ElementType.METHOD })
+@Retention(RetentionPolicy.RUNTIME)
+@HttpMethod(HttpMethod.PATCH)
+@Documented
+public @interface PATCH {
 }
