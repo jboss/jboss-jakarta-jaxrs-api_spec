@@ -29,7 +29,7 @@
 
     <groupId>org.jboss.spec.javax.ws.rs</groupId>
     <artifactId>jboss-jaxrs-api_3.0_spec</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1.Final</version>
     <packaging>bundle</packaging>
     <name>jboss-jakarta-jaxrs-api_spec</name>
     <description>Jakarta API for RESTful Web Services</description>
