@@ -16,16 +16,11 @@
 
 package javax.ws.rs.client;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.ServiceConfigurationError;
@@ -44,13 +39,15 @@ import java.util.logging.Logger;
 final class FactoryFinder {
 
     private static final Logger LOGGER = Logger.getLogger(FactoryFinder.class.getName());
-    private static final String RESTEASY_JAXRS_API_MODULE = "org.jboss.resteasy.resteasy-jaxrs-api";
 
     private FactoryFinder() {
         // prevents instantiation
     }
 
     static ClassLoader getContextClassLoader() {
+        if (System.getSecurityManager() == null) {
+            return Thread.currentThread().getContextClassLoader();
+        }
         return AccessController.doPrivileged((PrivilegedAction<ClassLoader>) () -> {
             ClassLoader cl = null;
             try {
@@ -123,26 +120,16 @@ final class FactoryFinder {
      *                                or could not be instantiated.
      */
     static <T> Object find(final String factoryId, final String fallbackClassName, Class<T> service) throws ClassNotFoundException {
-        ClassLoader classLoader = getContextClassLoader();
+        final ClassLoader classLoader = getContextClassLoader();
 
-        try {
-            Iterator<T> iterator = ServiceLoader.load(service, FactoryFinder.getContextClassLoader()).iterator();
-
-            if(iterator.hasNext()) {
-                return iterator.next();
-            }
-        } catch (Exception | ServiceConfigurationError ex) {
-            LOGGER.log(Level.FINER, "Failed to load service " + factoryId + ".", ex);
+        Object result = getFirstService(classLoader, factoryId, service);
+        if (result != null) {
+            return result;
         }
 
-        try {
-            Iterator<T> iterator = ServiceLoader.load(service, FactoryFinder.class.getClassLoader()).iterator();
-
-            if(iterator.hasNext()) {
-                return iterator.next();
-            }
-        } catch (Exception | ServiceConfigurationError ex) {
-            LOGGER.log(Level.FINER, "Failed to load service " + factoryId + ".", ex);
+        result = getFirstService(getClassLoader(), factoryId, service);
+        if (result != null) {
+            return result;
         }
 
         // try to read from $java.home/lib/jaxrs.properties
@@ -183,25 +170,6 @@ final class FactoryFinder {
                     + " from a system property", se);
         }
 
-        ClassLoader moduleClassLoader = getModuleClassLoader();
-        if (moduleClassLoader != null) {
-           String serviceId = "META-INF/services/" + factoryId;
-           try (InputStream is = moduleClassLoader.getResourceAsStream(serviceId)) {
-              if( is!=null ) {
-                  try (BufferedReader rd = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
-          
-                      String factoryClassName = rd.readLine();
-
-                      if (factoryClassName != null &&
-                          ! "".equals(factoryClassName)) {
-                          return newInstance(factoryClassName, moduleClassLoader);
-                      }
-                  }
-              }
-          } catch( Exception ex ) {
-          }
-        }
-
         if (fallbackClassName == null) {
             throw new ClassNotFoundException(
                     "Provider for " + factoryId + " cannot be found", null);
@@ -210,57 +178,47 @@ final class FactoryFinder {
         return newInstance(fallbackClassName, classLoader);
     }
 
-    private static ClassLoader getModuleClassLoader() {
-       try {
-           final Class<?> moduleClass = Class.forName("org.jboss.modules.Module");
-           final Class<?> moduleIdentifierClass = Class.forName("org.jboss.modules.ModuleIdentifier");
-           final Class<?> moduleLoaderClass = Class.forName("org.jboss.modules.ModuleLoader");
-           final Object moduleLoader;
-           final SecurityManager sm = System.getSecurityManager();
-           if (sm == null) {
-               moduleLoader = moduleClass.getMethod("getBootModuleLoader").invoke(null);
-           } else {
-               try {
-                   moduleLoader = AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
-                       public Object run() throws Exception {
-                           return moduleClass.getMethod("getBootModuleLoader").invoke(null);
-                       }
-                   });
-               } catch (PrivilegedActionException pae) {
-                   throw pae.getException();
-               }
-           }
-           Object module;
-           try {
-               Object moduleIdentifier = moduleIdentifierClass.getMethod("create", String.class).invoke(null, RESTEASY_JAXRS_API_MODULE);
-               module = moduleLoaderClass.getMethod("loadModule", moduleIdentifierClass).invoke(moduleLoader, moduleIdentifier);
-           } catch (Exception e) {
-               //ignore, module not found
-               return null;
-           }
+    private static <T> T getFirstService(final ClassLoader cl, final String factoryId, final Class<T> service) {
+        if (System.getSecurityManager() == null) {
+            try {
+                Iterator<T> iterator = ServiceLoader.load(service, cl).iterator();
 
-           if (sm == null)
-           {
-               return (ClassLoader) moduleClass.getMethod("getClassLoader").invoke(module);
-           } else {
-               try {
-                   return AccessController.doPrivileged(new PrivilegedExceptionAction<ClassLoader>() {
-                       @Override
-                       public ClassLoader run() throws Exception {
-                           return (ClassLoader) moduleClass.getMethod("getClassLoader").invoke(module);
-                       }
-                   });
-               } catch (PrivilegedActionException pae) {
-                   throw pae.getException();
-               }
-           }
-        } catch (ClassNotFoundException e) {
-           //ignore, JBoss Modules might not be available at all
+                if (iterator.hasNext()) {
+                    return iterator.next();
+                }
+            } catch (Exception | ServiceConfigurationError ex) {
+                LOGGER.log(Level.FINER, "Failed to load service " + factoryId + ".", ex);
+            }
             return null;
-        } catch (RuntimeException e) {
-           throw e;
-        } catch (Exception e) {
-           throw new RuntimeException(e);
         }
+        return AccessController.doPrivileged((PrivilegedAction<T>) () -> {
+            try {
+                Iterator<T> iterator = ServiceLoader.load(service, cl).iterator();
+
+                if (iterator.hasNext()) {
+                    return iterator.next();
+                }
+            } catch (Exception | ServiceConfigurationError ex) {
+                LOGGER.log(Level.FINER, "Failed to load service " + factoryId + ".", ex);
+            }
+            return null;
+        });
+    }
+
+    private static ClassLoader getClassLoader() {
+        if (System.getSecurityManager() == null) {
+            ClassLoader result = FactoryFinder.class.getClassLoader();
+            if (result == null) {
+                result = ClassLoader.getSystemClassLoader();
+            }
+            return result;
+        }
+        return AccessController.doPrivileged((PrivilegedAction<ClassLoader>) () -> {
+            ClassLoader result = FactoryFinder.class.getClassLoader();
+            if (result == null) {
+                result = ClassLoader.getSystemClassLoader();
+            }
+            return result;
+        });
     }
 }
