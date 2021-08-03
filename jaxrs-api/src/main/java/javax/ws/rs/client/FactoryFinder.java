@@ -45,6 +45,9 @@ final class FactoryFinder {
     }
 
     static ClassLoader getContextClassLoader() {
+        if (System.getSecurityManager() == null) {
+            return Thread.currentThread().getContextClassLoader();
+        }
         return AccessController.doPrivileged((PrivilegedAction<ClassLoader>) () -> {
             ClassLoader cl = null;
             try {
@@ -117,26 +120,16 @@ final class FactoryFinder {
      *                                or could not be instantiated.
      */
     static <T> Object find(final String factoryId, final String fallbackClassName, Class<T> service) throws ClassNotFoundException {
-        ClassLoader classLoader = getContextClassLoader();
+        final ClassLoader classLoader = getContextClassLoader();
 
-        try {
-            Iterator<T> iterator = ServiceLoader.load(service, FactoryFinder.getContextClassLoader()).iterator();
-
-            if(iterator.hasNext()) {
-                return iterator.next();
-            }
-        } catch (Exception | ServiceConfigurationError ex) {
-            LOGGER.log(Level.FINER, "Failed to load service " + factoryId + ".", ex);
+        Object result = getFirstService(classLoader, factoryId, service);
+        if (result != null) {
+            return result;
         }
 
-        try {
-            Iterator<T> iterator = ServiceLoader.load(service, FactoryFinder.class.getClassLoader()).iterator();
-
-            if(iterator.hasNext()) {
-                return iterator.next();
-            }
-        } catch (Exception | ServiceConfigurationError ex) {
-            LOGGER.log(Level.FINER, "Failed to load service " + factoryId + ".", ex);
+        result = getFirstService(getClassLoader(), factoryId, service);
+        if (result != null) {
+            return result;
         }
 
         // try to read from $java.home/lib/jaxrs.properties
@@ -183,5 +176,49 @@ final class FactoryFinder {
         }
 
         return newInstance(fallbackClassName, classLoader);
+    }
+
+    private static <T> T getFirstService(final ClassLoader cl, final String factoryId, final Class<T> service) {
+        if (System.getSecurityManager() == null) {
+            try {
+                Iterator<T> iterator = ServiceLoader.load(service, cl).iterator();
+
+                if (iterator.hasNext()) {
+                    return iterator.next();
+                }
+            } catch (Exception | ServiceConfigurationError ex) {
+                LOGGER.log(Level.FINER, "Failed to load service " + factoryId + ".", ex);
+            }
+            return null;
+        }
+        return AccessController.doPrivileged((PrivilegedAction<T>) () -> {
+            try {
+                Iterator<T> iterator = ServiceLoader.load(service, cl).iterator();
+
+                if (iterator.hasNext()) {
+                    return iterator.next();
+                }
+            } catch (Exception | ServiceConfigurationError ex) {
+                LOGGER.log(Level.FINER, "Failed to load service " + factoryId + ".", ex);
+            }
+            return null;
+        });
+    }
+
+    private static ClassLoader getClassLoader() {
+        if (System.getSecurityManager() == null) {
+            ClassLoader result = FactoryFinder.class.getClassLoader();
+            if (result == null) {
+                result = ClassLoader.getSystemClassLoader();
+            }
+            return result;
+        }
+        return AccessController.doPrivileged((PrivilegedAction<ClassLoader>) () -> {
+            ClassLoader result = FactoryFinder.class.getClassLoader();
+            if (result == null) {
+                result = ClassLoader.getSystemClassLoader();
+            }
+            return result;
+        });
     }
 }
