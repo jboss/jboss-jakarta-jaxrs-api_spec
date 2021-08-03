@@ -70,31 +70,34 @@ public abstract class ClientBuilder implements Configurable<ClientBuilder> {
 
                 // PrivilegedExceptionAction added in https://github.com/jboss/jboss-jaxrs-api_spec/pull/5
                 final SecurityManager sm = System.getSecurityManager();
-                ClassLoader loader = null;
+                final String errorMessage;
 
                 if (sm == null) {
-
-                    loader = pClass.getClassLoader();
+                    ClassLoader loader = pClass.getClassLoader();
                     if (loader == null) {
                         loader = ClassLoader.getSystemClassLoader();
                     }
+                    URL targetTypeURL = loader.getResource(classnameAsResource);
+                    errorMessage = "ClassCastException: attempting to cast"
+                            + delegate.getClass().getClassLoader().getResource(classnameAsResource)
+                            + " to " + targetTypeURL;
 
                 } else {
-                    loader = AccessController.doPrivileged(new PrivilegedExceptionAction<ClassLoader>() {
+                    errorMessage = AccessController.doPrivileged(new PrivilegedExceptionAction<String>() {
                         @Override
-                        public ClassLoader run() throws Exception {
-                            ClassLoader cloader = pClass.getClassLoader();
-                            if (cloader == null) {
-                                cloader = ClassLoader.getSystemClassLoader();
+                        public String run() throws Exception {
+                            ClassLoader loader = pClass.getClassLoader();
+                            if (loader == null) {
+                                loader = ClassLoader.getSystemClassLoader();
                             }
-                            return cloader;
+                            URL targetTypeURL = loader.getResource(classnameAsResource);
+                            return "ClassCastException: attempting to cast"
+                                    + delegate.getClass().getClassLoader().getResource(classnameAsResource)
+                                    + " to " + targetTypeURL;
                         }
                     });
                 }
-                URL targetTypeURL = loader.getResource(classnameAsResource);
-                throw new LinkageError("ClassCastException: attempting to cast"
-                        + delegate.getClass().getClassLoader().getResource(classnameAsResource)
-                        + " to " + targetTypeURL);
+                throw new LinkageError(errorMessage);
             }
             return (ClientBuilder) delegate;
         } catch (Exception ex) {

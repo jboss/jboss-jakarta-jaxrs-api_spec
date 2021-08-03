@@ -45,6 +45,9 @@ final class FactoryFinder {
     }
 
     private static ClassLoader getContextClassLoader() {
+        if (System.getSecurityManager() == null) {
+            return Thread.currentThread().getContextClassLoader();
+        }
         return AccessController.doPrivileged((PrivilegedAction<ClassLoader>) () -> {
             ClassLoader cl = null;
             try {
