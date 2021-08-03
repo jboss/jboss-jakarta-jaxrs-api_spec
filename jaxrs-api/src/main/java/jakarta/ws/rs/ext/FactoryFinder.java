@@ -45,6 +45,9 @@ final class FactoryFinder {
     }
 
     private static ClassLoader getContextClassLoader() {
+        if (System.getSecurityManager() == null) {
+            return Thread.currentThread().getContextClassLoader();
+        }
     	// function, rather than anonymous subclass, goes back to at least official release 2.1.1. 
         return AccessController.doPrivileged((PrivilegedAction<ClassLoader>) () -> {
             ClassLoader cl = null;
