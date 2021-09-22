@@ -210,7 +210,7 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <version>${maven.javadoc.plugin.version}</version>
-                        <configuration combine.self="override">
+                        <configuration>
                             <doctitle>${apidocs.title}</doctitle>
                             <bottom>
                                 <![CDATA[Copyright &#169; 1996-2017,
